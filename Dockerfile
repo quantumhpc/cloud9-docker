@@ -8,11 +8,11 @@ MAINTAINER QuantumHPC <info@quantumhpc.com>
 # ------------------------------------------------------------------------------
 # Install base
 RUN apt-get update
-RUN apt-get install -y build-essential g++ curl libssl-dev apache2-utils git libxml2-dev sshfs
+RUN apt-get install -y build-essential g++ curl libssl-dev apache2-utils git libxml2-dev sshfs rpcbind nfs-common
 
 # ------------------------------------------------------------------------------
 # Install Node.js
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
 RUN apt-get install -y nodejs
     
 # ------------------------------------------------------------------------------
@@ -20,6 +20,8 @@ RUN apt-get install -y nodejs
 RUN git clone https://github.com/c9/core.git /cloud9
 WORKDIR /cloud9
 RUN scripts/install-sdk.sh
+RUN npm install; exit 0
+RUN git reset --hard
 
 # Tweak standlone.js conf
 RUN sed -i -e 's_127.0.0.1_0.0.0.0_g' /cloud9/configs/standalone.js 
